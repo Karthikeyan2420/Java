@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Storage</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+</head>
+<body>
+    <h1>Simple Storage</h1>
+    <input type="number" id="inputValue" placeholder="Enter a value">
+    <button onclick="setValue()">Set Value</button>
+    <button onclick="getValue()">Get Value</button>
+    <button onclick="deposit()">Deposit</button>
+    <button onclick="withdraw()">Withdraw</button>
+    <input type="text" id="recipientAddress" placeholder="Recipient Address">
+    <button onclick="transfer()">Transfer</button>
+    <button onclick="getBalance()">Get Balance</button>
+    <p id="valueDisplay">Stored Value: </p>
+
+    <script>
+        let web3;
+        let contractInstance;
+        const contractAddress = '0x09ADA40a0C7B4fa507696E2b7a0f138CA3e6f91C'; // Replace with your deployed contract address
+        const contractABI = [
+            {"inputs":[],"name":"get","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"x","type":"uint256"}],"name":"set","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"storedData","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"x","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"x","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"x","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+        ]; // Replace with your contract ABI
+
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                } catch (error) {
+                    console.error("User denied account access");
+                }
+            } else if (window.web3) {
+                web3 = new Web3(window.web3.currentProvider);
+            } else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            }
+
+            contractInstance = new web3.eth.Contract(contractABI, contractAddress);
+        });
+
+        async function setValue() {
+            const accounts = await web3.eth.getAccounts();
+            const value = document.getElementById('inputValue').value;
+            await contractInstance.methods.set(value).send({ from: accounts[0] });
+        }
+
+        async function getValue() {
+            const value = await contractInstance.methods.get().call();
+            document.getElementById('valueDisplay').innerText = 'Stored Value: ' + value;
+        }
+
+        async function deposit() {
+            const accounts = await web3.eth.getAccounts();
+            const value = document.getElementById('inputValue').value;
+            await contractInstance.methods.deposit(value).send({ from: accounts[0] });
+        }
+
+        async function withdraw() {
+            const accounts = await web3.eth.getAccounts();
+            const value = document.getElementById('inputValue').value;
+            await contractInstance.methods.withdraw(value).send({ from: accounts[0] });
+        }
+
+        async function transfer() {
+            const accounts = await web3.eth.getAccounts();
+            const value = document.getElementById('inputValue').value;
+            const recipientAddress = document.getElementById('recipientAddress').value;
+            await contractInstance.methods.transfer(recipientAddress, value).send({ from: accounts[0] });
+        }
+
+        async function getBalance() {
+            const value = await contractInstance.methods.getBalance().call();
+            document.getElementById('valueDisplay').innerText = 'Stored Value: ' + value;
+        }
+    </script>
+</body>
+</html>
