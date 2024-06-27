@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="firstgui">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+    <constraints>
+      <xy x="20" y="20" width="498" height="137"/>
+    </constraints>
+    <properties>
+      <background color="-16109568"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="cd80b" class="javax.swing.JLabel">
+        <constraints/>
+        <properties>
+          <text value="Enter the a value"/>
+        </properties>
+      </component>
+      <component id="ca7cb" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+        <constraints/>
+        <properties>
+          <background color="-15978496"/>
+          <columns value="30"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="dd739" class="javax.swing.JLabel">
+        <constraints/>
+        <properties>
+          <text value="Enter the B value"/>
+        </properties>
+      </component>
+      <component id="8d4bd" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+        <constraints/>
+        <properties>
+          <background color="-15847424"/>
+          <columns value="30"/>
+        </properties>
+      </component>
+      <component id="ee2f4" class="javax.swing.JButton" binding="button1" default-binding="true">
+        <constraints/>
+        <properties>
+          <text value="Button"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
